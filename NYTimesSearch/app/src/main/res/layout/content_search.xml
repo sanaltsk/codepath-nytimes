@@ -32,7 +32,8 @@
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
         android:layout_alignRight="@+id/etResults"
-        android:layout_alignEnd="@+id/etResults" />
+        android:layout_alignEnd="@+id/etResults"
+        android:onClick="onArticleSearch"/>
 
     <GridView
         android:id="@+id/etResults"
