@@ -100,6 +100,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray articleJsonResults = null;
                 try {
+                    articles.clear();
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     articles.addAll(Article.fromJSONArray(articleJsonResults));
                 } catch (JSONException e) {
