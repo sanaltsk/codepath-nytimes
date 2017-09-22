@@ -4,13 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by sanal on 9/21/17.
  */
 
-public class Article {
+public class Article implements Serializable {
     String link;
     String headLine;
     String thumbNail;

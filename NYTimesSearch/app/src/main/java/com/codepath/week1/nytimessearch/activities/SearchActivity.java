@@ -1,5 +1,6 @@
-package com.codepath.week1.nytimessearch;
+package com.codepath.week1.nytimessearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,10 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
+import com.codepath.week1.nytimessearch.R;
+import com.codepath.week1.nytimessearch.adapter.ArticleArrayAdapter;
 import com.codepath.week1.nytimessearch.model.Article;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -20,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -29,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     Button etButton;
     GridView etResults;
     ArrayList<Article> articles;
+    ArticleArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +50,18 @@ public class SearchActivity extends AppCompatActivity {
         etButton = (Button) findViewById(R.id.etSearch);
         etResults = (GridView) findViewById(R.id.etResults);
         articles = new ArrayList<>();
+        adapter = new ArticleArrayAdapter(this, articles);
+        etResults.setAdapter(adapter);
 
+        etResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
+                Article article = articles.get(position);
+                intent.putExtra("article", article);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -88,6 +105,7 @@ public class SearchActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                adapter.notifyDataSetChanged();
                 Log.d("debug",articles.toString());
 
             }

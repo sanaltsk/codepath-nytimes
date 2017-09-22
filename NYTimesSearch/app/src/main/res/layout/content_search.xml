@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.codepath.week1.nytimessearch.SearchActivity"
+    tools:context="com.codepath.week1.nytimessearch.activities.SearchActivity"
     tools:showIn="@layout/activity_search">
 
     <EditText
@@ -42,6 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/etQuery"
         android:layout_centerHorizontal="true"
+        android:numColumns="4"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="61dp" />
 </RelativeLayout>
