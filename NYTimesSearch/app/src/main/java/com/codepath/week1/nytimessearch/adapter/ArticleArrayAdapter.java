@@ -1,9 +1,11 @@
 package com.codepath.week1.nytimessearch.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.week1.nytimessearch.R;
+import com.codepath.week1.nytimessearch.activities.ArticleActivity;
 import com.codepath.week1.nytimessearch.model.Article;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.attr.resource;
@@ -24,41 +28,80 @@ import static android.R.attr.resource;
  * Created by sanal on 9/21/17.
  */
 
-public class ArticleArrayAdapter extends ArrayAdapter<Article> {
+public class ArticleArrayAdapter extends RecyclerView.Adapter<ArticleArrayAdapter.ViewHolder>{
+    private List<Article> articles;
+    private Context context;
 
-    public ArticleArrayAdapter(@NonNull Context context, List<Article>articles) {
-        super(context, 0, articles);
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+        public TextView tvTitle;
+        public ImageView ivImage;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if(position != RecyclerView.NO_POSITION) {
+                Article article = articles.get(position);
+                Intent intent = new Intent(getContext(), ArticleActivity.class);
+                intent.putExtra("article", article);
+                getContext().startActivity(intent);
+            }
+
+        }
     }
 
-    @NonNull
+    public ArticleArrayAdapter(Context context, List<Article>articles) {
+        this.context = context;
+        this.articles = articles;
+    }
+
+    private Context getContext() {
+        return context;
+    }
+
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //get data item
-        Article article = this.getItem(position);
-        //check if existing view is recycled
-        //if not inflate the layout
-        if(convertView==null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_article_result,parent,false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        // Inflate the custom layout
+        View articleView = inflater.inflate(R.layout.item_article_result, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(articleView);
+        return viewHolder;
+
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        if(articles.size()>0) {
+            Article article = articles.get(position);
+
+            TextView tvTitle = holder.tvTitle;
+            tvTitle.setText(article.getHeadLine());
+
+            ImageView ivImage = holder.ivImage;
+//            ivImage.setImageResource(0);
+
+            String thumbnail = article.getThumbNail();
+            if (!TextUtils.isEmpty(thumbnail)) {
+                Picasso.with(getContext()).load(thumbnail)
+                .placeholder(R.drawable.placeholder)
+                        .into(ivImage);
+            }
         }
+    }
 
-        //once inflated,
-        ImageView imageView = (ImageView)convertView.findViewById(R.id.ivImage);
-
-        //clear out recycled image
-        imageView.setImageResource(0);
-
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-        tvTitle.setText(article.getHeadLine());
-
-        String thumbnail = article.getThumbNail();
-        if(!TextUtils.isEmpty(thumbnail)) {
-            //populate the thumbnail image
-            Picasso.with(getContext()).load(thumbnail)
-//                .placeholder(R.drawable.user_placeholder)
-//                .error(R.drawable.user_placeholder_error)
-                    .into(imageView);
-        }
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return articles.size();
     }
 }

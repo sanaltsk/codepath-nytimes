@@ -3,6 +3,9 @@ package com.codepath.week1.nytimessearch.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -46,22 +49,19 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
+        RecyclerView rvArticles = (RecyclerView) findViewById(R.id.etResults);
+        if(articles==null) {
+            articles = new ArrayList<>();
+        }
+
         etQuery = (EditText) findViewById(R.id.etQuery);
         etButton = (Button) findViewById(R.id.etSearch);
-        etResults = (GridView) findViewById(R.id.etResults);
-        articles = new ArrayList<>();
         adapter = new ArticleArrayAdapter(this, articles);
-        etResults.setAdapter(adapter);
-
-        etResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ArticleActivity.class);
-                Article article = articles.get(position);
-                intent.putExtra("article", article);
-                startActivity(intent);
-            }
-        });
+        rvArticles.setAdapter(adapter);
+        StaggeredGridLayoutManager gridLayoutManager =
+                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        // Attach the layout manager to the recycler view
+        rvArticles.setLayoutManager(gridLayoutManager);//
     }
 
     @Override
