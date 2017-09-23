@@ -39,6 +39,11 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
 
+    String beginDate;
+    String sortOrder;
+    Boolean cbArts, cbFashion, cbSports;
+    String fq_search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
         adapter = new ArticleArrayAdapter(this, articles);
         rvArticles.setAdapter(adapter);
         StaggeredGridLayoutManager gridLayoutManager =
-                new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         // Attach the layout manager to the recycler view
         rvArticles.setLayoutManager(gridLayoutManager);//
     }
@@ -80,10 +85,41 @@ public class SearchActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            this.startActivityForResult(intent, 2);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==2) {
+            if(null != data) {
+                beginDate = data.getStringExtra("begin_date");
+                sortOrder = data.getStringExtra("order");
+
+                cbArts = data.getBooleanExtra("arts", false);
+                cbFashion = data.getBooleanExtra("fashion", false);
+                cbSports = data.getBooleanExtra("sports", false);
+
+
+                if(cbArts || cbSports || cbFashion) {
+                    fq_search = "news_desk:(";
+                    if (cbArts)
+                        fq_search += "Arts,";
+                    if (cbFashion)
+                        fq_search += "Fashion, Style,";
+                    if (cbSports)
+                        fq_search += "Sports";
+                    fq_search += ")";
+                }
+                Log.d("debug", beginDate+":"+sortOrder+":"+cbArts.toString()+":"+cbFashion.toString()+":"+cbSports.toString()+":"+fq_search);
+            }
+        }
     }
 
     public void onArticleSearch(View view) {
@@ -95,6 +131,9 @@ public class SearchActivity extends AppCompatActivity {
         params.put("api-key","fbe95cf398c3486bba648665321509be");
         params.put("page",0);
         params.put("q",query);
+        params.put("begin_date",beginDate);
+        params.put("sort",sortOrder);
+        params.put("fq",fq_search);
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

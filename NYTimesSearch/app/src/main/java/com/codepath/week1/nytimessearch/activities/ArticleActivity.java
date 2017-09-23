@@ -1,5 +1,6 @@
 package com.codepath.week1.nytimessearch.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebResourceRequest;

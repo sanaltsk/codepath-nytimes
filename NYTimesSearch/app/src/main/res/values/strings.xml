@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="search_hint">Enter Search Query</string>
     <string name="search_button_text">Search</string>
+    <string-array name="sort_order">
+        <item>newest</item>
+        <item>oldest</item>
+    </string-array>
 </resources>
