@@ -14,10 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.week1.nytimessearch.R;
 import com.codepath.week1.nytimessearch.activities.ArticleActivity;
 import com.codepath.week1.nytimessearch.model.Article;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +93,10 @@ public class ArticleArrayAdapter extends RecyclerView.Adapter<ArticleArrayAdapte
 
             String thumbnail = article.getThumbNail();
             if (!TextUtils.isEmpty(thumbnail)) {
-                Picasso.with(getContext()).load(thumbnail)
-                .placeholder(R.drawable.placeholder)
+                Glide.with(context)
+                        .load(thumbnail)
+                        .error(R.drawable.placeholder)
+                        .placeholder(R.drawable.placeholder)
                         .into(ivImage);
             }
         }
