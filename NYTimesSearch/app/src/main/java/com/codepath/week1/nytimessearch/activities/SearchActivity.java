@@ -1,6 +1,9 @@
 package com.codepath.week1.nytimessearch.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.codepath.week1.nytimessearch.R;
 import com.codepath.week1.nytimessearch.adapter.ArticleArrayAdapter;
@@ -31,6 +35,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+
+import static android.R.attr.data;
 
 public class SearchActivity extends AppCompatActivity {
     EditText etQuery;
@@ -76,7 +82,11 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-                onArticleSearch(query);
+                if(isNetworkAvailable()) {
+                    onArticleSearch(query);
+                }else {
+                    Toast.makeText(getApplicationContext(), "No internet connectivity", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
 
@@ -160,5 +170,12 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("debug",responseString);
             }
         });
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }
