@@ -2,15 +2,11 @@ package com.codepath.week1.nytimessearch.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.codepath.week1.nytimessearch.R;
 import com.codepath.week1.nytimessearch.activities.ArticleActivity;
 import com.codepath.week1.nytimessearch.model.Article;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.attr.resource;
@@ -54,7 +48,6 @@ public class ArticleArrayAdapter extends RecyclerView.Adapter<ArticleArrayAdapte
                 intent.putExtra("article", article);
                 getContext().startActivity(intent);
             }
-
         }
     }
 
@@ -71,10 +64,7 @@ public class ArticleArrayAdapter extends RecyclerView.Adapter<ArticleArrayAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        // Inflate the custom layout
         View articleView = inflater.inflate(R.layout.item_article_result, parent, false);
-
-        // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(articleView);
         return viewHolder;
 
