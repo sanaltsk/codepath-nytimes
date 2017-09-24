@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.codepath.week1.nytimessearch.R;
 import com.codepath.week1.nytimessearch.adapter.ArticleArrayAdapter;
+import com.codepath.week1.nytimessearch.listener.EndlessRecyclerViewScrollListener;
 import com.codepath.week1.nytimessearch.model.Article;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 import static android.R.attr.data;
+import static android.R.attr.offset;
+import static java.util.Collections.addAll;
 
 public class SearchActivity extends AppCompatActivity {
     EditText etQuery;
@@ -44,12 +48,14 @@ public class SearchActivity extends AppCompatActivity {
     GridView etResults;
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
-
     String beginDate;
     String sortOrder;
     Boolean cbArts, cbFashion, cbSports;
     String fq_search;
 
+    private String search_query;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private  RecyclerView rvArticles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +66,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        RecyclerView rvArticles = (RecyclerView) findViewById(R.id.etResults);
+        rvArticles = (RecyclerView) findViewById(R.id.etResults);
         if(articles==null) {
             articles = new ArrayList<>();
         }
@@ -68,22 +74,33 @@ public class SearchActivity extends AppCompatActivity {
         rvArticles.setAdapter(adapter);
         StaggeredGridLayoutManager gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        // Attach the layout manager to the recycler view
-        rvArticles.setLayoutManager(gridLayoutManager);//
+
+        rvArticles.setLayoutManager(gridLayoutManager);
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                onArticleSearch(search_query, page);
+            }
+        };
+        rvArticles.addOnScrollListener(scrollListener);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                search_query = query;
                 searchView.clearFocus();
                 if(isNetworkAvailable()) {
-                    onArticleSearch(query);
+                    articles.clear();
+                    adapter.notifyDataSetChanged();
+                    scrollListener.resetState();
+                    onArticleSearch(query, 0);
                 }else {
                     Toast.makeText(getApplicationContext(), "No internet connectivity", Toast.LENGTH_LONG).show();
                 }
@@ -139,12 +156,12 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    public void onArticleSearch(String query) {
+    public void onArticleSearch(String query, int offset) {
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         RequestParams params = new RequestParams();
         params.put("api-key","fbe95cf398c3486bba648665321509be");
-        params.put("page",0);
+        params.put("page",offset);
         params.put("q",query);
         params.put("begin_date",beginDate);
         params.put("sort",sortOrder);
@@ -154,7 +171,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray articleJsonResults = null;
                 try {
-                    articles.clear();
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     articles.addAll(Article.fromJSONArray(articleJsonResults));
                 } catch (JSONException e) {
@@ -162,7 +178,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
                 Log.d("debug",articles.toString());
-
             }
 
             @Override

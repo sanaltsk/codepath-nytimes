@@ -89,7 +89,7 @@ public class ArticleArrayAdapter extends RecyclerView.Adapter<ArticleArrayAdapte
             tvTitle.setText(article.getHeadLine());
 
             ImageView ivImage = holder.ivImage;
-//            ivImage.setImageResource(0);
+            ivImage.setImageResource(0);
 
             String thumbnail = article.getThumbNail();
             if (!TextUtils.isEmpty(thumbnail)) {

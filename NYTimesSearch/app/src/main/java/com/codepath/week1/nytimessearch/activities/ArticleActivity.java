@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -42,10 +41,8 @@ public class ArticleActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.article_menu, menu);
         MenuItem item = menu.findItem(R.id.action_share);
-        // Fetch reference to the share action provider
         miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         attachShareIntentAction();
-        // Return true to display menu
         return true;
     }
 
