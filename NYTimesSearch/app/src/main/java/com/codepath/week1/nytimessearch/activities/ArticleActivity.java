@@ -22,7 +22,7 @@ public class ArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-        final Article article = (Article) getIntent().getSerializableExtra("article");
+        final Article article = (Article) getIntent().getParcelableExtra("article");
 
         WebView webView = (WebView)findViewById(R.id.wvArticle);
         webView.setWebViewClient(new WebViewClient(){
