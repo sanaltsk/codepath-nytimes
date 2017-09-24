@@ -8,38 +8,10 @@
     tools:context="com.codepath.week1.nytimessearch.activities.SearchActivity"
     tools:showIn="@layout/activity_search">
 
-    <EditText
-        android:id="@+id/etQuery"
-        android:layout_width="233dp"
-        android:layout_height="43dp"
-        android:layout_alignBottom="@+id/etSearch"
-        android:ems="10"
-        android:hint="@string/search_hint"
-        android:text=""
-        android:textColorHint="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="14dp" />
-
-    <Button
-        android:id="@+id/etSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search_button_text"
-        tools:layout_editor_absoluteX="258dp"
-        tools:layout_editor_absoluteY="7dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/etQuery"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_alignRight="@+id/etResults"
-        android:layout_alignEnd="@+id/etResults"
-        android:onClick="onArticleSearch"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/etResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/etQuery"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
