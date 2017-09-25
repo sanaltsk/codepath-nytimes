@@ -108,15 +108,11 @@ public class SearchActivity extends AppCompatActivity implements SettingsFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-//            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-//            this.startActivityForResult(intent, 2);
             FragmentManager fm = getSupportFragmentManager();
             SettingsFragment settingsFragment  = SettingsFragment.newInstance("Settings");
             settingsFragment.show(fm, "fragment_settings");
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
