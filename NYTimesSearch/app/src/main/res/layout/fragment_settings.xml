@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.week1.nytimessearch.fragment.SettingsFragment">
+
+    <TextView
+        android:id="@+id/tvBeginDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="28dp"
+        android:text="Begin Date"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/etBeginDate"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tvBeginDate"
+        android:layout_alignBottom="@+id/tvBeginDate"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_toEndOf="@+id/tvBeginDate"
+        android:layout_toRightOf="@+id/tvBeginDate"
+        android:ems="10"
+        android:hint="12/31/2015"
+        android:inputType="date" />
+    <TextView
+        android:id="@+id/tvSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Sort Order"
+        android:textSize="18sp"
+        android:layout_below="@+id/etBeginDate"
+        android:layout_alignLeft="@+id/tvBeginDate"
+        android:layout_alignStart="@+id/tvBeginDate" />
+
+    <Spinner
+        android:id="@+id/sortOrder"
+        android:entries="@array/sort_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etBeginDate"
+        android:layout_alignStart="@+id/etBeginDate"
+        android:layout_alignTop="@+id/tvSort" />
+
+    <TextView
+        android:id="@+id/tvCategory"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvSort"
+        android:layout_alignStart="@+id/tvSort"
+        android:layout_below="@+id/tvSort"
+        android:layout_marginTop="34dp"
+        android:text="News Desk Values" />
+    <CheckBox
+        android:id="@+id/cbArts"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Arts"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/tvCategory"
+        android:layout_toLeftOf="@+id/sortOrder"
+        android:layout_toStartOf="@+id/sortOrder" />
+
+    <CheckBox
+        android:id="@+id/cbFashion"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="Fashsion and Style"
+        android:layout_below="@+id/cbArts"
+        android:layout_alignLeft="@+id/cbArts"
+        android:layout_alignStart="@+id/cbArts" />
+
+    <CheckBox
+        android:id="@+id/cbSports"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="Sports"
+        android:layout_below="@+id/cbFashion"
+        android:layout_alignLeft="@+id/cbFashion"
+        android:layout_alignStart="@+id/cbFashion" />
+
+    <Button
+        android:id="@+id/btSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvCategory"
+        android:layout_alignRight="@+id/tvCategory"
+        android:layout_below="@+id/cbSports"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="31dp"
+        android:background="@color/colorPrimary"
+        android:onClick="submitMessage"
+        android:text="Save"
+        android:textColor="@android:color/background_light" />
+</RelativeLayout>

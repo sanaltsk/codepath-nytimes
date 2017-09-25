@@ -45,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         Boolean fashion = cbFashion.isChecked();
         Boolean sports = cbSports.isChecked();
 
-        SimpleDateFormat spf=new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat spf=new SimpleDateFormat("mm/dd/yyyy");
         Date newDate=spf.parse(beginDate);
         spf= new SimpleDateFormat("yyyymmdd");
         String new_date = spf.format(newDate);
