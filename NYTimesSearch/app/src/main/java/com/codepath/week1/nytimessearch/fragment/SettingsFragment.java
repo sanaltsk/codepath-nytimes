@@ -1,6 +1,8 @@
 package com.codepath.week1.nytimessearch.fragment;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -10,17 +12,20 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.codepath.week1.nytimessearch.R;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -30,6 +35,8 @@ public class SettingsFragment extends DialogFragment {
     private Spinner sortOrder;
     private CheckBox cbArts, cbFashion, cbSports;
     private Button saveBtn;
+    Calendar myCalendar = Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener date;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -71,6 +78,28 @@ public class SettingsFragment extends DialogFragment {
                 }
             }
         });
+        date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                tvBeginDate.setText(monthOfYear+"/"+dayOfMonth+"/"+year);
+            }
+
+        };
+
+        tvBeginDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

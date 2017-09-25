@@ -28,6 +28,7 @@
         android:layout_marginStart="22dp"
         android:layout_toEndOf="@+id/tvBeginDate"
         android:layout_toRightOf="@+id/tvBeginDate"
+        android:editable="false"
         android:ems="10"
         android:hint="12/31/2015"
         android:inputType="date" />
@@ -106,4 +107,5 @@
         android:onClick="submitMessage"
         android:text="Save"
         android:textColor="@android:color/background_light" />
+
 </RelativeLayout>
