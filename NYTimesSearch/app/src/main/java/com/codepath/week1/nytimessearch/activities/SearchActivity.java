@@ -126,6 +126,8 @@ public class SearchActivity extends AppCompatActivity implements SettingsFragmen
         params.put("begin_date",beginDate);
         params.put("sort",sortOrder);
         params.put("fq",fq_search);
+        Log.d("debug","news_desk :: " + fq_search);
+
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -186,6 +188,8 @@ public class SearchActivity extends AppCompatActivity implements SettingsFragmen
             if (cbSports)
                 fq_search += "Sports";
             fq_search += ")";
+        }else {
+            fq_search = null;
         }
         Log.d("debug", beginDate+":"+sortOrder+":"+cbArts.toString()+":"+cbFashion.toString()+":"+cbSports.toString()+":"+fq_search);
     }

@@ -1,11 +1,15 @@
 package com.codepath.week1.nytimessearch.fragment;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.codepath.week1.nytimessearch.R;
+
+import java.text.ParseException;
+import java.util.Date;
 
 
 public class SettingsFragment extends DialogFragment {
@@ -54,14 +61,20 @@ public class SettingsFragment extends DialogFragment {
         cbSports = (CheckBox) view.findViewById(R.id.cbSports);
         saveBtn = (Button) view.findViewById(R.id.btSave);
         saveBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                sendBackResult();
+                try {
+                    sendBackResult();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    public void sendBackResult() {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sendBackResult() throws ParseException {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         OnFragmentInteractionListener listener = (OnFragmentInteractionListener) getActivity();
         String beginDate = tvBeginDate.getText().toString();
@@ -69,8 +82,15 @@ public class SettingsFragment extends DialogFragment {
         Boolean arts = cbArts.isChecked();
         Boolean fashion = cbFashion.isChecked();
         Boolean sports = cbSports.isChecked();
+        SimpleDateFormat spf=new SimpleDateFormat("mm/dd/yyyy");
+        if(TextUtils.isEmpty(beginDate)) {
+            beginDate="01/01/2010";
+        }
+        Date newDate=spf.parse(beginDate);
+        spf= new SimpleDateFormat("yyyymmdd");
+        String new_date = spf.format(newDate);
 
-        listener.setBeginDate(beginDate);
+        listener.setBeginDate(new_date);
         listener.setSortOrder(order);
         listener.setCbArts(arts);
         listener.setCbFashion(fashion);
